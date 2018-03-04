@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnPlanets, btnResearch, btnSummary, btnSettings, btnHelp;
     Fragment fragPlanets, fragResearch, fragSettings, fragSummary, fragHelp;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        // Begin: dodaje fragment na starcie aplikacji
+        // Begin: dodaje fragmenty na starcie aplikacji
         if (savedInstanceState == null) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -53,14 +54,23 @@ public class MainActivity extends AppCompatActivity {
             if (fragSettings != null) ft.hide(fragSettings);
             if (fragHelp != null) ft.hide(fragHelp);
             ft.commit();
-        }
-        // End: dodaje fragment na starcie aplikacji
+        } // End: dodaje fragmenty na starcie aplikacji
 
-        buttonsMainMenu(); // przywołuje metodę kontrolującą przyciski głównego menu
+        btnPlanets = findViewById(R.id.btn_planets);
+        btnResearch = findViewById(R.id.btn_research);
+        btnSummary = findViewById(R.id.btn_summary);
+        btnHelp = findViewById(R.id.btn_help);
+        btnSettings = findViewById(R.id.btn_settings);
 
-        // Begin: wyświetla aktualny czas i odświeża co sekundę
+        btnPlanets.setOnClickListener(btnClickListener);
+        btnResearch.setOnClickListener(btnClickListener);
+        btnSummary.setOnClickListener(btnClickListener);
+        btnSettings.setOnClickListener(btnClickListener);
+        btnHelp.setOnClickListener(btnClickListener);
+
         currentTime(); // przywołuje metodę na początku aplikacji
 
+        // Begin: wyświetla aktualny czas i odświeża co sekundę
         Thread thread = new Thread() {
             @Override
             public void run() {
@@ -97,6 +107,59 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Start: ClickListener
+    private View.OnClickListener btnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int id = v.getId();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            switch (id) {
+                case R.id.btn_planets:
+                    if (fragPlanets != null) ft.show(fragPlanets);
+                    if (fragResearch != null) ft.hide(fragResearch);
+                    if (fragSummary != null) ft.hide(fragSummary);
+                    if (fragSettings != null) ft.hide(fragSettings);
+                    if (fragHelp != null) ft.hide(fragHelp);
+                    ft.commit();
+                    break;
+                case R.id.btn_research:
+                    if (fragPlanets != null) ft.hide(fragPlanets);
+                    if (fragResearch != null) ft.show(fragResearch);
+                    if (fragSummary != null) ft.hide(fragSummary);
+                    if (fragSettings != null) ft.hide(fragSettings);
+                    if (fragHelp != null) ft.hide(fragHelp);
+                    ft.commit();
+                    break;
+                case R.id.btn_summary:
+                    if (fragPlanets != null) ft.hide(fragPlanets);
+                    if (fragResearch != null) ft.hide(fragResearch);
+                    if (fragSummary != null) ft.show(fragSummary);
+                    if (fragSettings != null) ft.hide(fragSettings);
+                    if (fragHelp != null) ft.hide(fragHelp);
+                    ft.commit();
+                    break;
+                case R.id.btn_settings:
+                    if (fragPlanets != null) ft.hide(fragPlanets);
+                    if (fragResearch != null) ft.hide(fragResearch);
+                    if (fragSummary != null) ft.hide(fragSummary);
+                    if (fragSettings != null) ft.show(fragSettings);
+                    if (fragHelp != null) ft.hide(fragHelp);
+                    ft.commit();
+                    break;
+                case R.id.btn_help:
+                    if (fragPlanets != null) ft.hide(fragPlanets);
+                    if (fragResearch != null) ft.hide(fragResearch);
+                    if (fragSummary != null) ft.hide(fragSummary);
+                    if (fragSettings != null) ft.hide(fragSettings);
+                    if (fragHelp != null) ft.show(fragHelp);
+                    ft.commit();
+                    break;
+            }
+        }
+    };
+    // End: ClickListener
+
     // Begin: metoda wyświetlająca aktualny czas
     private void currentTime() {
         TextView currentTime = findViewById(R.id.tv_current_time);
@@ -106,89 +169,5 @@ public class MainActivity extends AppCompatActivity {
         currentTime.setText("Current time " + timeString);
     }
     // End: metoda wyświetlająca aktualny czas
-
-
-    // Begin: metoda kontrolująca przyciski głównego menu
-    public void buttonsMainMenu() {
-
-        btnPlanets = findViewById(R.id.btn_planets);
-        btnResearch = findViewById(R.id.btn_research);
-        btnSummary = findViewById(R.id.btn_summary);
-        btnHelp = findViewById(R.id.btn_help);
-        btnSettings = findViewById(R.id.btn_settings);
-
-
-        btnPlanets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                if (fragPlanets != null) ft.show(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-            }
-        });
-
-        btnResearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.show(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-            }
-        });
-
-        btnSummary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.show(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-            }
-        });
-
-        btnHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.show(fragHelp);
-                ft.commit();
-            }
-        });
-
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.show(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-            }
-        });
-    }
-    // End: metoda kontrolująca przyciski głównego menu
-
 
 }
