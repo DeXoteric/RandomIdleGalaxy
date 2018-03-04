@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         };

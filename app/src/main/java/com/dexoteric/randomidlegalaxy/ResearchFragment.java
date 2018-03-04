@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,11 +23,18 @@ public class ResearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_research, container, false);
+        Log.i(TAG, "fragmentResearch.onCreateView");
+        return inflater.inflate(R.layout.fragment_research, container, false);
 
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "fragmentResearch.onViewCreated");
         Button btnNewPlanet = view.findViewById(R.id.btnNewPlanet);
         tvPlanet = view.findViewById(R.id.tvPlanet);
-        btnNewPlanet.setOnClickListener(new OnClickListener() {
+        btnNewPlanet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 planetName = "Capital";
@@ -38,32 +44,28 @@ public class ResearchFragment extends Fragment {
                 System.out.println(tvPlanet.getText());
             }
         });
-        return view;
-
     }
-
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "fragment.onActivityCreated");
-        if (savedInstanceState != null) {
-            tvPlanet.setText(savedInstanceState.getCharSequence("planet"));
-        }
+        Log.i(TAG, "fragmentResearch.onActivityCreated");
+//        if (savedInstanceState != null) {
+//            tvPlanet.setText(savedInstanceState.getCharSequence("planet"));
+//        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.i(TAG, "fragment.onSaveInstanceState");
-        outState.putCharSequence("planet", tvPlanet.getText() );
+        Log.i(TAG, "fragmentResearch.onSaveInstanceState");
+//        outState.putCharSequence("planet", tvPlanet.getText() );
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.i(TAG, "fragment.onDetach");
+        Log.i(TAG, "fragmentResearch.onDetach");
 
     }
 }
