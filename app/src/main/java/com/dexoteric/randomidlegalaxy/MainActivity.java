@@ -33,21 +33,31 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        buttonsMainMenu(); // przywołuje metodę kontrolującą przyciski głównego menu
 
         // Begin: dodaje fragment na starcie aplikacji
         if (savedInstanceState == null) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.fragmentPlanets, new PlanetsFragment());
-            ft.add(R.id.fragmentResearch, new ResearchFragment());
-            ft.add(R.id.fragmentSummary, new SummaryFragment());
-            ft.add(R.id.fragmentSettings, new SettingsFragment());
-            ft.add(R.id.fragmentHelp, new HelpFragment());
+            fragPlanets = new PlanetsFragment();
+            fragResearch = new ResearchFragment();
+            fragSummary = new SummaryFragment();
+            fragSettings = new SettingsFragment();
+            fragHelp = new HelpFragment();
+            ft.add(R.id.fragment_frame, fragPlanets, "tagPlanets");
+            ft.add(R.id.fragment_frame, fragResearch, "tagResearch");
+            ft.add(R.id.fragment_frame, fragSummary, "tagSummary");
+            ft.add(R.id.fragment_frame, fragSettings, "tagSettings");
+            ft.add(R.id.fragment_frame, fragHelp, "tagHelp");
+            if (fragPlanets != null) ft.show(fragPlanets);
+            if (fragResearch != null) ft.hide(fragResearch);
+            if (fragSummary != null) ft.hide(fragSummary);
+            if (fragSettings != null) ft.hide(fragSettings);
+            if (fragHelp != null) ft.hide(fragHelp);
             ft.commit();
         }
         // End: dodaje fragment na starcie aplikacji
 
+        buttonsMainMenu(); // przywołuje metodę kontrolującą przyciski głównego menu
 
         // Begin: wyświetla aktualny czas i odświeża co sekundę
         currentTime(); // przywołuje metodę na początku aplikacji
@@ -91,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Begin: metoda wyświetlająca aktualny czas
     private void currentTime() {
-        TextView currentTime = findViewById(R.id.tvCurrentTime);
+        TextView currentTime = findViewById(R.id.tv_current_time);
         long time = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String timeString = sdf.format(time);
@@ -101,25 +111,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Begin: metoda kontrolująca przyciski głównego menu
-    private void buttonsMainMenu() {
+    public void buttonsMainMenu() {
 
-        btnPlanets = findViewById(R.id.btnPlanets);
-        btnResearch = findViewById(R.id.btnResearch);
-        btnSummary = findViewById(R.id.btnSummary);
-        btnHelp = findViewById(R.id.btnHelp);
-        btnSettings = findViewById(R.id.btnSettings);
+        btnPlanets = findViewById(R.id.btn_planets);
+        btnResearch = findViewById(R.id.btn_research);
+        btnSummary = findViewById(R.id.btn_summary);
+        btnHelp = findViewById(R.id.btn_help);
+        btnSettings = findViewById(R.id.btn_settings);
+
 
         btnPlanets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                fragPlanets = getFragmentManager().findFragmentById(R.id.fragmentPlanets);
-                fragResearch = getFragmentManager().findFragmentById(R.id.fragmentResearch);
-                fragSummary = getFragmentManager().findFragmentById(R.id.fragmentSummary);
-                fragSettings = getFragmentManager().findFragmentById(R.id.fragmentSettings);
-                fragHelp = getFragmentManager().findFragmentById(R.id.fragmentHelp);
-                if (fragPlanets == null) ft.add(R.id.fragmentPlanets, new PlanetsFragment());
                 if (fragPlanets != null) ft.show(fragPlanets);
                 if (fragResearch != null) ft.hide(fragResearch);
                 if (fragSummary != null) ft.hide(fragSummary);
@@ -134,12 +139,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                fragPlanets = getFragmentManager().findFragmentById(R.id.fragmentPlanets);
-                fragResearch = getFragmentManager().findFragmentById(R.id.fragmentResearch);
-                fragSummary = getFragmentManager().findFragmentById(R.id.fragmentSummary);
-                fragSettings = getFragmentManager().findFragmentById(R.id.fragmentSettings);
-                fragHelp = getFragmentManager().findFragmentById(R.id.fragmentHelp);
-                if (fragResearch == null) ft.add(R.id.fragmentResearch, new ResearchFragment());
                 if (fragPlanets != null) ft.hide(fragPlanets);
                 if (fragResearch != null) ft.show(fragResearch);
                 if (fragSummary != null) ft.hide(fragSummary);
@@ -154,12 +153,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                fragPlanets = getFragmentManager().findFragmentById(R.id.fragmentPlanets);
-                fragResearch = getFragmentManager().findFragmentById(R.id.fragmentResearch);
-                fragSummary = getFragmentManager().findFragmentById(R.id.fragmentSummary);
-                fragSettings = getFragmentManager().findFragmentById(R.id.fragmentSettings);
-                fragHelp = getFragmentManager().findFragmentById(R.id.fragmentHelp);
-                if (fragSummary == null) ft.add(R.id.fragmentSummary, new SummaryFragment());
                 if (fragPlanets != null) ft.hide(fragPlanets);
                 if (fragResearch != null) ft.hide(fragResearch);
                 if (fragSummary != null) ft.show(fragSummary);
@@ -174,12 +167,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                fragPlanets = getFragmentManager().findFragmentById(R.id.fragmentPlanets);
-                fragResearch = getFragmentManager().findFragmentById(R.id.fragmentResearch);
-                fragSummary = getFragmentManager().findFragmentById(R.id.fragmentSummary);
-                fragSettings = getFragmentManager().findFragmentById(R.id.fragmentSettings);
-                fragHelp = getFragmentManager().findFragmentById(R.id.fragmentHelp);
-                if (fragHelp == null) ft.add(R.id.fragmentHelp, new HelpFragment());
                 if (fragPlanets != null) ft.hide(fragPlanets);
                 if (fragResearch != null) ft.hide(fragResearch);
                 if (fragSummary != null) ft.hide(fragSummary);
@@ -194,12 +181,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                fragPlanets = getFragmentManager().findFragmentById(R.id.fragmentPlanets);
-                fragResearch = getFragmentManager().findFragmentById(R.id.fragmentResearch);
-                fragSummary = getFragmentManager().findFragmentById(R.id.fragmentSummary);
-                fragSettings = getFragmentManager().findFragmentById(R.id.fragmentSettings);
-                fragHelp = getFragmentManager().findFragmentById(R.id.fragmentHelp);
-                if (fragSettings == null) ft.add(R.id.fragmentSettings, new SettingsFragment());
                 if (fragPlanets != null) ft.hide(fragPlanets);
                 if (fragResearch != null) ft.hide(fragResearch);
                 if (fragSummary != null) ft.hide(fragSummary);
