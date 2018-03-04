@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--nazwa aplikacji-->
+
+    <!--surowce-->
+    <string name="crystals">Kryształy</string>
+    <string name="planetCapital">Stolica</string>
+    <string name="planetType">Typ</string>
+    <string name="planetSize">Rozmiar</string>
+    <string name="planetSizeSmall">Mała</string>
+    <string name="planetSizeMedium">Średnia</string>
+    <string name="planetSizeLarge">Duża</string>
+    <string name="energy">Energia</string>
+    <string name="planets">Planety</string>
+    <string name="summary">Podsumowanie</string>
+
+</resources>
