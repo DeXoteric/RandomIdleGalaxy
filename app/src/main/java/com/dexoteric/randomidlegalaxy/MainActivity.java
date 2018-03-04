@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
         // End: wyświetla aktualny czas i odświeża co sekundę
     }
 
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.i(TAG, "onWindowFocusChanged");
