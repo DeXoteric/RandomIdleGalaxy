@@ -25,56 +25,52 @@ public class MainActivity extends AppCompatActivity {
     SettingsFragment fragSettings = new SettingsFragment();
     HelpFragment fragHelp = new HelpFragment();
 
-
     // Start: ClickListener
-    private View.OnClickListener btnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            switch (id) {
-                case R.id.btn_planets:
-                    if (fragPlanets != null) ft.show(fragPlanets);
-                    if (fragResearch != null) ft.hide(fragResearch);
-                    if (fragSummary != null) ft.hide(fragSummary);
-                    if (fragSettings != null) ft.hide(fragSettings);
-                    if (fragHelp != null) ft.hide(fragHelp);
-                    ft.commit();
-                    break;
-                case R.id.btn_research:
-                    if (fragPlanets != null) ft.hide(fragPlanets);
-                    if (fragResearch != null) ft.show(fragResearch);
-                    if (fragSummary != null) ft.hide(fragSummary);
-                    if (fragSettings != null) ft.hide(fragSettings);
-                    if (fragHelp != null) ft.hide(fragHelp);
-                    ft.commit();
-                    break;
-                case R.id.btn_summary:
-                    if (fragPlanets != null) ft.hide(fragPlanets);
-                    if (fragResearch != null) ft.hide(fragResearch);
-                    if (fragSummary != null) ft.show(fragSummary);
-                    if (fragSettings != null) ft.hide(fragSettings);
-                    if (fragHelp != null) ft.hide(fragHelp);
-                    ft.commit();
-                    break;
-                case R.id.btn_settings:
-                    if (fragPlanets != null) ft.hide(fragPlanets);
-                    if (fragResearch != null) ft.hide(fragResearch);
-                    if (fragSummary != null) ft.hide(fragSummary);
-                    if (fragSettings != null) ft.show(fragSettings);
-                    if (fragHelp != null) ft.hide(fragHelp);
-                    ft.commit();
-                    break;
-                case R.id.btn_help:
-                    if (fragPlanets != null) ft.hide(fragPlanets);
-                    if (fragResearch != null) ft.hide(fragResearch);
-                    if (fragSummary != null) ft.hide(fragSummary);
-                    if (fragSettings != null) ft.hide(fragSettings);
-                    if (fragHelp != null) ft.show(fragHelp);
-                    ft.commit();
-                    break;
-            }
+    private View.OnClickListener btnClickListener = v -> {
+        int id = v.getId();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        switch (id) {
+            case R.id.btn_planets:
+                if (fragPlanets != null) ft.show(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                ft.commit();
+                break;
+            case R.id.btn_research:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.show(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                ft.commit();
+                break;
+            case R.id.btn_summary:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.show(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                ft.commit();
+                break;
+            case R.id.btn_settings:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.show(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                ft.commit();
+                break;
+            case R.id.btn_help:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.show(fragHelp);
+                ft.commit();
+                break;
         }
     };
     // End: ClickListener
@@ -83,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Begin: tymczasowy język polski
-        Locale locale = new Locale("pl");
+        Locale locale = new Locale("en");
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
@@ -130,11 +126,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     while (!isInterrupted()) {
                         Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                currentTime(); // przywołuje metodę co sekundę
-                            }
+                        runOnUiThread(() -> {
+                            currentTime(); // przywołuje metodę co sekundę
                         });
                     }
                 } catch (InterruptedException ignored) {
@@ -165,9 +158,10 @@ public class MainActivity extends AppCompatActivity {
     private void currentTime() {
         TextView currentTime = findViewById(R.id.tv_current_time);
         long time = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
         String timeString = sdf.format(time);
-        currentTime.setText("Current time " + timeString);
+        String displayText = getString(R.string.current_time) + timeString;
+        currentTime.setText(displayText);
     }
     // End: metoda wyświetlająca aktualny czas
 
