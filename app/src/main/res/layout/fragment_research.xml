@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dexoteric.randomidlegalaxy.ResearchFragment"
+    tools:context="com.dexoteric.randomidlegalaxy.fragments.ResearchFragment"
     android:background="@drawable/shape_background_border"
     android:padding="5dp">
 
@@ -16,35 +16,20 @@
         android:text="Research" />
 
     <TextView
-        android:id="@+id/valueB"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1.18" />
-
-    <Button
-        android:id="@+id/btnNewPlanet"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
-        android:text="New Planet" />
+    android:id="@+id/valueB"
+    android:layout_alignParentStart="true"
+    android:layout_below="@id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="1.18" />
 
     <TextView
-        android:id="@+id/tvPlanet"
+        android:id="@+id/textView2"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/valueB"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/btnNewPlanet"
-        android:gravity="center"
-        android:paddingEnd="10dp"
-        android:paddingStart="10dp"
-        android:layout_marginStart="5dp"
-        android:text=""
-        tools:text="Planet" />
+        android:layout_height="wrap_content"
+        android:text="text from test fragment" />
+
 
 </RelativeLayout>

@@ -22,6 +22,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="current_time">Current time:</string>
+    <string name="test">Test</string>
+    <string name="monospace">monospace</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

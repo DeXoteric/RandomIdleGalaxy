@@ -8,8 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/colorText</item>
         <item name="android:buttonStyle">@style/button</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:fontFamily">monospace</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:fontFamily">@string/monospace</item>
     </style>
 
     <!--styl dla nazw własnych np. surówców-->

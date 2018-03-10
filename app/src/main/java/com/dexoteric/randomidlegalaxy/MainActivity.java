@@ -10,70 +10,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dexoteric.randomidlegalaxy.fragments.Communicator;
+import com.dexoteric.randomidlegalaxy.fragments.HelpFragment;
+import com.dexoteric.randomidlegalaxy.fragments.PlanetsFragment;
+import com.dexoteric.randomidlegalaxy.fragments.ResearchFragment;
+import com.dexoteric.randomidlegalaxy.fragments.SettingsFragment;
+import com.dexoteric.randomidlegalaxy.fragments.SummaryFragment;
+import com.dexoteric.randomidlegalaxy.fragments.TestFragment;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Communicator{
 
     private static final String TAG = "lifecycleMessage";
 
 
-    PlanetsFragment fragPlanets = new PlanetsFragment();
-    ResearchFragment fragResearch = new ResearchFragment();
-    SummaryFragment fragSummary = new SummaryFragment();
-    SettingsFragment fragSettings = new SettingsFragment();
-    HelpFragment fragHelp = new HelpFragment();
+    public PlanetsFragment fragPlanets = new PlanetsFragment();
+    public ResearchFragment fragResearch = new ResearchFragment();
+    public SummaryFragment fragSummary = new SummaryFragment();
+    public SettingsFragment fragSettings = new SettingsFragment();
+    public HelpFragment fragHelp = new HelpFragment();
+    public TestFragment fragTest = new TestFragment();
 
-    // Start: ClickListener
-    private View.OnClickListener btnClickListener = v -> {
-        int id = v.getId();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        switch (id) {
-            case R.id.btn_planets:
-                if (fragPlanets != null) ft.show(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-                break;
-            case R.id.btn_research:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.show(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-                break;
-            case R.id.btn_summary:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.show(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-                break;
-            case R.id.btn_settings:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.show(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                ft.commit();
-                break;
-            case R.id.btn_help:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.show(fragHelp);
-                ft.commit();
-                break;
-        }
-    };
-    // End: ClickListener
+
+    public static Bundle myBundle = new Bundle();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
             ft.add(R.id.fragment_frame, fragSummary, "tagSummary");
             ft.add(R.id.fragment_frame, fragSettings, "tagSettings");
             ft.add(R.id.fragment_frame, fragHelp, "tagHelp");
+            ft.add(R.id.fragment_frame, fragTest, "tagTest");
             ft.show(fragPlanets);
             ft.hide(fragResearch);
             ft.hide(fragSummary);
             ft.hide(fragSettings);
             ft.hide(fragHelp);
+            ft.hide(fragTest);
             ft.commit();
         } // End: dodaje fragmenty na starcie aplikacji
 
@@ -110,12 +76,15 @@ public class MainActivity extends AppCompatActivity {
         Button btnSummary = findViewById(R.id.btn_summary);
         Button btnHelp = findViewById(R.id.btn_help);
         Button btnSettings = findViewById(R.id.btn_settings);
+        Button btnTest = findViewById(R.id.btn_test);
 
         btnPlanets.setOnClickListener(btnClickListener);
         btnResearch.setOnClickListener(btnClickListener);
         btnSummary.setOnClickListener(btnClickListener);
         btnSettings.setOnClickListener(btnClickListener);
         btnHelp.setOnClickListener(btnClickListener);
+        btnTest.setOnClickListener(btnClickListener);
+
 
         currentTime(); // przywołuje metodę na początku aplikacji
 
@@ -164,5 +133,79 @@ public class MainActivity extends AppCompatActivity {
         currentTime.setText(displayText);
     }
     // End: metoda wyświetlająca aktualny czas
+
+    // Start: ClickListener
+    private View.OnClickListener btnClickListener = v -> {
+        int id = v.getId();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        switch (id) {
+            case R.id.btn_planets:
+                if (fragPlanets != null) ft.show(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                if (fragTest != null) ft.hide(fragTest);
+                ft.commit();
+                break;
+            case R.id.btn_research:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.show(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                if (fragTest != null) ft.hide(fragTest);
+                ft.commit();
+                String text = (String) myBundle.get("id_User");
+                TextView textView = findViewById(R.id.textView2);
+                if (text !=null) textView.setText(text);
+                break;
+            case R.id.btn_summary:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.show(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                if (fragTest != null) ft.hide(fragTest);
+                ft.commit();
+                break;
+            case R.id.btn_settings:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.show(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                if (fragTest != null) ft.hide(fragTest);
+                ft.commit();
+                break;
+            case R.id.btn_help:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.show(fragHelp);
+                if (fragTest != null) ft.hide(fragTest);
+                ft.commit();
+                break;
+            case R.id.btn_test:
+                if (fragPlanets != null) ft.hide(fragPlanets);
+                if (fragResearch != null) ft.hide(fragResearch);
+                if (fragSummary != null) ft.hide(fragSummary);
+                if (fragSettings != null) ft.hide(fragSettings);
+                if (fragHelp != null) ft.hide(fragHelp);
+                if (fragTest != null) ft.show(fragTest);
+                ft.commit();
+                break;
+        }
+    };
+    // End: ClickListener
+
+    // fragment communication
+    @Override
+    public void respond(String data) {
+        ResearchFragment fragResearch = (ResearchFragment) getFragmentManager().findFragmentByTag("tagResearch");
+        fragResearch.changeData(data);
+    }
 
 }

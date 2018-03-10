@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_planet_recyclerview"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="5dp"
-        android:textSize="12sp"
-        android:text="ReallyLongName"/>
+        android:textSize="@dimen/small_text_size"
+        android:text=""/>
 
     <ImageView
         android:id="@+id/planet_icon"
@@ -30,6 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="5dp"
-        android:textSize="12sp"
-        android:text="Text"/>
+        android:textSize="@dimen/small_text_size"
+        android:text=""/>
 </LinearLayout>

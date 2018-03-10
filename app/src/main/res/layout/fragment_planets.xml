@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dexoteric.randomidlegalaxy.PlanetsFragment"
     android:background="@drawable/shape_background_border"
-    android:padding="5dp">
+    android:padding="5dp"
+    tools:context="com.dexoteric.randomidlegalaxy.fragments.PlanetsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -14,5 +14,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
+
+    <ImageView
+        android:id="@+id/horizontal_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/rv_planets"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/line" />
+
 
 </RelativeLayout>

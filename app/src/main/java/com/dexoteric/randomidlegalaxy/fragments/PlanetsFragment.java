@@ -1,4 +1,4 @@
-package com.dexoteric.randomidlegalaxy;
+package com.dexoteric.randomidlegalaxy.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dexoteric.randomidlegalaxy.R;
+import com.dexoteric.randomidlegalaxy.adapters.Divider;
 import com.dexoteric.randomidlegalaxy.adapters.PlanetAdapter;
 
 
@@ -17,19 +19,13 @@ public class PlanetsFragment extends Fragment {
 
     private static final String TAG = "lifecycleMessage";
     RecyclerView mRecyclerPlanets;
+    RecyclerView.Adapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         Log.i(TAG, "fragmentPlanets.onCreateView");
-
-        View rootView = inflater.inflate(R.layout.fragment_planets, container, false);
-        mRecyclerPlanets = rootView.findViewById(R.id.rv_planets);
-        mRecyclerPlanets.setAdapter(new PlanetAdapter(getActivity()));
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerPlanets.setLayoutManager(manager);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_planets, container, false);
     }
 
     @Override
@@ -37,12 +33,19 @@ public class PlanetsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "fragmentPlanets.onViewCreated");
 
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentPlanets.onActivityCreated");
+        mRecyclerPlanets = getActivity().findViewById(R.id.rv_planets);
+        mRecyclerPlanets.addItemDecoration(new Divider(getActivity(), LinearLayoutManager.HORIZONTAL));
+        mAdapter = new PlanetAdapter(getActivity());
+        mRecyclerPlanets.setAdapter(mAdapter);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerPlanets.setLayoutManager(manager);
 
     }
 
