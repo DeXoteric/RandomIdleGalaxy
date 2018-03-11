@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements Communicator{
             ft.hide(fragHelp);
             ft.hide(fragTest);
             ft.commit();
+            findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } // End: dodaje fragmenty na starcie aplikacji
 
         Button btnPlanets = findViewById(R.id.btn_planets);
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         int id = v.getId();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        ft.setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,android.R.animator.fade_in,android.R.animator.fade_out);
         switch (id) {
             case R.id.btn_planets:
                 if (fragPlanets != null) ft.show(fragPlanets);
@@ -197,6 +199,36 @@ public class MainActivity extends AppCompatActivity implements Communicator{
                 if (fragTest != null) ft.show(fragTest);
                 ft.commit();
                 break;
+        }
+        if (id == R.id.btn_planets) {
+            findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
+        } else {
+            findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_enabled));
+        }
+        if (id == R.id.btn_research) {
+            findViewById(R.id.btn_research).setBackground(getResources().getDrawable(R.drawable.button_selected));
+        } else {
+            findViewById(R.id.btn_research).setBackground(getResources().getDrawable(R.drawable.button_enabled));
+        }
+        if (id == R.id.btn_summary) {
+            findViewById(R.id.btn_summary).setBackground(getResources().getDrawable(R.drawable.button_selected));
+        } else {
+            findViewById(R.id.btn_summary).setBackground(getResources().getDrawable(R.drawable.button_enabled));
+        }
+        if (id == R.id.btn_test) {
+            findViewById(R.id.btn_test).setBackground(getResources().getDrawable(R.drawable.button_selected));
+        } else {
+            findViewById(R.id.btn_test).setBackground(getResources().getDrawable(R.drawable.button_enabled));
+        }
+        if (id == R.id.btn_help) {
+            findViewById(R.id.btn_help).setBackground(getResources().getDrawable(R.drawable.button_selected));
+        } else {
+            findViewById(R.id.btn_help).setBackground(getResources().getDrawable(R.drawable.button_enabled));
+        }
+        if (id == R.id.btn_settings) {
+            findViewById(R.id.btn_settings).setBackground(getResources().getDrawable(R.drawable.button_selected));
+        } else {
+            findViewById(R.id.btn_settings).setBackground(getResources().getDrawable(R.drawable.button_enabled));
         }
     };
     // End: ClickListener

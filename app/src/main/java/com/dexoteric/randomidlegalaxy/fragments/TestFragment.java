@@ -12,18 +12,19 @@ import android.widget.TextView;
 
 import com.dexoteric.randomidlegalaxy.MainActivity;
 import com.dexoteric.randomidlegalaxy.R;
-import com.dexoteric.randomidlegalaxy.extras.Array;
+import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetResources;
+import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetSize;
+import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetType;
 
 
-public class TestFragment extends Fragment implements View.OnClickListener{
+public class TestFragment extends Fragment implements View.OnClickListener {
 
 
-    private String planetName, planetSize, planetResources;
-     private TextView tvPlanet;
-    private Button btnNewPlanet;
-    Communicator comm; // fragment communication
     private static final String TAG = "lifecycleMessage";
-
+    Communicator comm; // fragment communication
+    private String planetName, planetSize, planetResources;
+    private TextView tvPlanet;
+    private Button btnNewPlanet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,10 +60,19 @@ public class TestFragment extends Fragment implements View.OnClickListener{
 
         switch (id) {
             case R.id.btnNewPlanet:
-                planetName = Array.randomPlanetType();
-                planetSize = Array.randomPlanetSize();
-                planetResources = Array.randomPlanetResources();
-                tvPlanet.setText("Planet: " + planetName + " - " + "Size: " + planetSize + " - " + "Resources: " + planetResources + ".");
+                RandomPlanetType planetType = new RandomPlanetType();
+                RandomPlanetSize planetSize = new RandomPlanetSize();
+                RandomPlanetResources planetResources = new RandomPlanetResources();
+                tvPlanet.setText(
+                        "Planet: "
+                                + planetType.getRandomPlanetType()
+                                + " - "
+                                + "Size: "
+                                + planetSize.getRandomPlanetSize()
+                                + " - "
+                                + "Resources: "
+                                + planetResources.getRandomPlanetResources()
+                );
                 String text = tvPlanet.getText().toString();
                 MainActivity.myBundle.putString("id_User", text);
 //                comm.respond(tvPlanet.getText().toString()); // fragment communication
