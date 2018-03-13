@@ -2,6 +2,7 @@ package com.dexoteric.randomidlegalaxy;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,18 +37,22 @@ public class MainActivity extends AppCompatActivity implements Communicator{
 
 
     public static Bundle myBundle = new Bundle();
-
+    public static String languageToLoad;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Begin: tymczasowy język polski
-        Locale locale = new Locale("en");
+
+        // Begin: wczytuje wybrany język
+        SharedPreferences languagepref = getSharedPreferences("com.dexoteric.randomidlegalaxy",MODE_PRIVATE);
+        languageToLoad = languagepref.getString("languageToLoad", "en");
+        Locale locale = new Locale(languageToLoad);
+        Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        // End: tymczasowy język polski
+
 
         setContentView(R.layout.activity_main);
 
@@ -100,7 +105,9 @@ public class MainActivity extends AppCompatActivity implements Communicator{
                             currentTime(); // przywołuje metodę co sekundę
                         });
                     }
-                } catch (InterruptedException ignored) {
+                }
+                catch (InterruptedException ignored) {
+
                 }
             }
         };
@@ -112,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements Communicator{
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.i(TAG, "onWindowFocusChanged");
         super.onWindowFocusChanged(hasFocus);
+
         if (hasFocus) {
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
