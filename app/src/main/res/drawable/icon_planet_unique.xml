@@ -6,8 +6,6 @@
     <size
         android:width="30dp"
         android:height="30dp" />
-    <stroke
-        android:width="2dp"
-        android:color="@color/colorAccentTwo" />
+
 
 </shape>

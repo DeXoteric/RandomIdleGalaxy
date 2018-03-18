@@ -32,23 +32,20 @@ public class PlanetsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.i(TAG, "fragmentPlanets.onViewCreated");
-
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentPlanets.onActivityCreated");
+
         mRecyclerPlanets = getActivity().findViewById(R.id.rv_planets);
         mRecyclerPlanets.addItemDecoration(new Divider(getActivity(), LinearLayoutManager.HORIZONTAL));
         mAdapter = new PlanetAdapter(getActivity());
         mRecyclerPlanets.setAdapter(mAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerPlanets.setLayoutManager(manager);
-
     }
-
 
 }
 

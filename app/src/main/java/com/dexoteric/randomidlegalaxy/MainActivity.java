@@ -23,29 +23,26 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements Communicator{
+public class MainActivity extends AppCompatActivity implements Communicator {
 
     private static final String TAG = "lifecycleMessage";
-
-
+    public static Bundle myBundle = new Bundle();
+    public static String languageToLoad;
     public PlanetsFragment fragPlanets = new PlanetsFragment();
     public ResearchFragment fragResearch = new ResearchFragment();
     public SummaryFragment fragSummary = new SummaryFragment();
     public SettingsFragment fragSettings = new SettingsFragment();
     public HelpFragment fragHelp = new HelpFragment();
     public TestFragment fragTest = new TestFragment();
-
-
-    public static Bundle myBundle = new Bundle();
-    public static String languageToLoad;
+    private int id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Begin: wczytuje wybrany język
-        SharedPreferences languagepref = getSharedPreferences("com.dexoteric.randomidlegalaxy",MODE_PRIVATE);
+        // wczytuje wybrany język
+        SharedPreferences languagepref = getSharedPreferences("com.dexoteric.randomidlegalaxy", MODE_PRIVATE);
         languageToLoad = languagepref.getString("languageToLoad", "en");
         Locale locale = new Locale(languageToLoad);
         Locale.setDefault(locale);
@@ -53,11 +50,10 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
-
         setContentView(R.layout.activity_main);
 
 
-        // Begin: dodaje fragmenty na starcie aplikacji
+        // dodaje fragmenty na starcie aplikacji
         if (savedInstanceState == null) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -75,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements Communicator{
             ft.hide(fragTest);
             ft.commit();
             findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
-        } // End: dodaje fragmenty na starcie aplikacji
+        }
+
 
         Button btnPlanets = findViewById(R.id.btn_planets);
         Button btnResearch = findViewById(R.id.btn_research);
@@ -105,9 +102,8 @@ public class MainActivity extends AppCompatActivity implements Communicator{
                             currentTime(); // przywołuje metodę co sekundę
                         });
                     }
-                }
-                catch (InterruptedException ignored) {
-
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -131,24 +127,12 @@ public class MainActivity extends AppCompatActivity implements Communicator{
         }
     }
 
-
-    // Begin: metoda wyświetlająca aktualny czas
-    private void currentTime() {
-        TextView currentTime = findViewById(R.id.tv_current_time);
-        long time = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        String timeString = sdf.format(time);
-        String displayText = getString(R.string.current_time) + timeString;
-        currentTime.setText(displayText);
-    }
-    // End: metoda wyświetlająca aktualny czas
-
-    // Start: ClickListener
+    //  listener dla przycisków w głównym menu
     private View.OnClickListener btnClickListener = v -> {
-        int id = v.getId();
+        id = v.getId();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.setCustomAnimations(android.R.animator.fade_in,android.R.animator.fade_out,android.R.animator.fade_in,android.R.animator.fade_out);
+        ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
         switch (id) {
             case R.id.btn_planets:
                 if (fragPlanets != null) ft.show(fragPlanets);
@@ -169,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements Communicator{
                 ft.commit();
                 String text = (String) myBundle.get("id_User");
                 TextView textView = findViewById(R.id.textView2);
-                if (text !=null) textView.setText(text);
+                if (text != null) textView.setText(text);
                 break;
             case R.id.btn_summary:
                 if (fragPlanets != null) ft.hide(fragPlanets);
@@ -208,44 +192,65 @@ public class MainActivity extends AppCompatActivity implements Communicator{
                 ft.commit();
                 break;
         }
+        menuButtonLayoutOnClick(); // przywołanie metody
+    };
+
+    // metoda zmieniająca layout przycisku w zależności który fragment jest aktywny
+    private void  menuButtonLayoutOnClick(){
         if (id == R.id.btn_planets) {
             findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } else {
             findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_enabled));
         }
+
         if (id == R.id.btn_research) {
             findViewById(R.id.btn_research).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } else {
             findViewById(R.id.btn_research).setBackground(getResources().getDrawable(R.drawable.button_enabled));
         }
+
         if (id == R.id.btn_summary) {
             findViewById(R.id.btn_summary).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } else {
             findViewById(R.id.btn_summary).setBackground(getResources().getDrawable(R.drawable.button_enabled));
         }
+
         if (id == R.id.btn_test) {
             findViewById(R.id.btn_test).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } else {
             findViewById(R.id.btn_test).setBackground(getResources().getDrawable(R.drawable.button_enabled));
         }
+
         if (id == R.id.btn_help) {
             findViewById(R.id.btn_help).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } else {
             findViewById(R.id.btn_help).setBackground(getResources().getDrawable(R.drawable.button_enabled));
         }
+
         if (id == R.id.btn_settings) {
             findViewById(R.id.btn_settings).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } else {
             findViewById(R.id.btn_settings).setBackground(getResources().getDrawable(R.drawable.button_enabled));
         }
-    };
-    // End: ClickListener
+    }
+
+    // metoda wyświetlająca aktualny czas
+    private void currentTime() {
+        TextView currentTime = findViewById(R.id.tv_current_time);
+        long time = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        String timeString = sdf.format(time);
+        String displayText = getString(R.string.current_time) + timeString;
+        currentTime.setText(displayText);
+    }
 
     // fragment communication
     @Override
     public void respond(String data) {
         ResearchFragment fragResearch = (ResearchFragment) getFragmentManager().findFragmentByTag("tagResearch");
         fragResearch.changeData(data);
+
     }
+
 
 }

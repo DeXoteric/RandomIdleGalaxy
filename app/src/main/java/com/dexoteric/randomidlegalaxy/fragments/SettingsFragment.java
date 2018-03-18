@@ -70,7 +70,6 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences languagepref = getActivity().getSharedPreferences("com.dexoteric.randomidlegalaxy",Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = languagepref.edit();
                 editor.putString("languageToLoad",MainActivity.languageToLoad ).apply();
-
             }
         });
     }

@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dexoteric.randomidlegalaxy.MainActivity;
+import com.dexoteric.randomidlegalaxy.Planet;
 import com.dexoteric.randomidlegalaxy.R;
-import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetResources;
+import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetName;
+import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetQuality;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetSize;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetType;
 
@@ -60,18 +62,28 @@ public class TestFragment extends Fragment implements View.OnClickListener {
 
         switch (id) {
             case R.id.btnNewPlanet:
+                RandomPlanetName planetName = new RandomPlanetName();
                 RandomPlanetType planetType = new RandomPlanetType();
                 RandomPlanetSize planetSize = new RandomPlanetSize();
-                RandomPlanetResources planetResources = new RandomPlanetResources();
+                RandomPlanetQuality planetQuality = new RandomPlanetQuality();
+
+                Planet planet = new Planet(planetName.getRandomPlanetName(), planetType.getRandomPlanetType(), planetSize.getRandomPlanetSize(), planetQuality.getRandomPlanetQuality());
+
                 tvPlanet.setText(
                         "Planet: "
-                                + planetType.getRandomPlanetType()
+                                + planet.getName()
+                                + " - "
+                                + "Type: "
+                                + planet.getType()
                                 + " - "
                                 + "Size: "
-                                + planetSize.getRandomPlanetSize()
+                                + planet.getSize()
                                 + " - "
-                                + "Resources: "
-                                + planetResources.getRandomPlanetResources()
+                                + "Quality: "
+                                + planet.getQuality()
+                                + " - "
+                                + "Multiplier: "
+                                + "x"+planet.getQualityMultiplier()
                 );
                 String text = tvPlanet.getText().toString();
                 MainActivity.myBundle.putString("id_User", text);
