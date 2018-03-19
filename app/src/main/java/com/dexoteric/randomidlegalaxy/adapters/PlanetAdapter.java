@@ -3,6 +3,7 @@ package com.dexoteric.randomidlegalaxy.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,8 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
         // nazwa planety według pozycji
         holder.planetName.setText(mPlanetName.get(position));
 
+
+        
         // ikona planety według typu
         if (mPlanetType.get(position).equals("Capital")) {
             holder.planetType.setImageResource(R.drawable.icon_planet_capital);
@@ -110,8 +113,11 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
             holder.planetType.setImageResource(R.drawable.icon_planet_gas);
         } else if (mPlanetType.get(position).equals("Desert")) {
             holder.planetType.setImageResource(R.drawable.icon_planet_desert);
+//        } else if (mPlanetType.get(position).equals("Unique")){
+//            holder.planetType.setImageResource(R.drawable.icon_planet_unique);
         } else {
             holder.planetType.setImageResource(R.drawable.icon_planet_unique);
+
         }
 
         // ikona wielkosci planety
@@ -121,10 +127,10 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
             holder.planetSize.setImageResource(R.drawable.icon_white);
         } else if (mPlanetSize.get(position).equals("Large")) {
             holder.planetSize.setImageResource(R.drawable.icon_green);
+//        } else if (mPlanetSize.get(position).equals("Capital")){
+//            holder.planetSize.setImageResource(R.drawable.icon_unique);
         } else {
-            holder.planetSpecial.setVisibility(View.VISIBLE);
-            holder.planetSize.setVisibility(View.INVISIBLE);
-            holder.planetQuality.setVisibility(View.INVISIBLE);
+            holder.planetSize.setImageResource(R.drawable.icon_unique);
         }
 
 
@@ -135,10 +141,10 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
             holder.planetQuality.setImageResource(R.drawable.icon_white);
         } else if (mPlanetQuality.get(position).equals("Rich")) {
             holder.planetQuality.setImageResource(R.drawable.icon_green);
+//        } else if (mPlanetQuality.get(position).equals("Capital")){
+//            holder.planetQuality.setImageResource(R.drawable.icon_unique);
         } else {
-            holder.planetSpecial.setVisibility(View.VISIBLE);
-            holder.planetSize.setVisibility(View.INVISIBLE);
-            holder.planetQuality.setVisibility(View.INVISIBLE);
+            holder.planetQuality.setImageResource(R.drawable.icon_unique);
         }
 
 

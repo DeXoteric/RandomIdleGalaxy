@@ -13,22 +13,22 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text=""
+        tools:text="Capital"
         android:textSize="@dimen/small_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Capital" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/iv_planet_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:src="@drawable/icon_planet_capital"
         app:layout_constraintBottom_toTopOf="@+id/tv_special"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_planet_name" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_planet_name"
+        tools:src="@drawable/icon_planet_capital" />
 
 
     <TextView
@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:text="Unique"
+        tools:text="Unique"
         android:textSize="@dimen/small_text_size"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,21 +49,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:src="@drawable/icon_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/iv_planet_quality"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/icon_green" />
 
     <ImageView
         android:id="@+id/iv_planet_quality"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:src="@drawable/icon_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/iv_planet_size" />
+        app:layout_constraintStart_toEndOf="@+id/iv_planet_size"
+        tools:src="@drawable/icon_red" />
 
 </android.support.constraint.ConstraintLayout>
