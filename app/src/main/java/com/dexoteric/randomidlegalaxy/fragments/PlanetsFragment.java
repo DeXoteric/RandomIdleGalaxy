@@ -10,16 +10,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dexoteric.randomidlegalaxy.MainActivity;
+import com.dexoteric.randomidlegalaxy.Planet;
 import com.dexoteric.randomidlegalaxy.R;
 import com.dexoteric.randomidlegalaxy.adapters.Divider;
 import com.dexoteric.randomidlegalaxy.adapters.PlanetAdapter;
+
+import java.util.List;
+
 
 
 public class PlanetsFragment extends Fragment {
 
     private static final String TAG = "lifecycleMessage";
-    RecyclerView mRecyclerPlanets;
-    RecyclerView.Adapter mAdapter;
+    RecyclerView recyclerPlanets;
+    RecyclerView.Adapter adapterPlanets;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,12 +44,18 @@ public class PlanetsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentPlanets.onActivityCreated");
 
-        mRecyclerPlanets = getActivity().findViewById(R.id.rv_planets);
-        mRecyclerPlanets.addItemDecoration(new Divider(getActivity(), LinearLayoutManager.HORIZONTAL));
-        mAdapter = new PlanetAdapter(getActivity());
-        mRecyclerPlanets.setAdapter(mAdapter);
+
+
+        MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+
+        List<Planet> planets = MainActivity.planetDatabase.planetDao().getAllPlanets();
+
+        recyclerPlanets = getActivity().findViewById(R.id.rv_planets);
+        recyclerPlanets.addItemDecoration(new Divider(getActivity(), LinearLayoutManager.HORIZONTAL));
+        adapterPlanets = new PlanetAdapter(planets);
+        recyclerPlanets.setAdapter(adapterPlanets);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerPlanets.setLayoutManager(manager);
+        recyclerPlanets.setLayoutManager(manager);
     }
 
 }

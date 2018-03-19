@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.dexoteric.randomidlegalaxy.MainActivity;
 import com.dexoteric.randomidlegalaxy.Planet;
@@ -23,10 +22,9 @@ public class TestFragment extends Fragment implements View.OnClickListener {
 
 
     private static final String TAG = "lifecycleMessage";
-    Communicator comm; // fragment communication
-    private String planetName, planetSize, planetResources;
-    private TextView tvPlanet;
-    private Button btnNewPlanet;
+
+    private Button btnNewPlanet,btnDeletePlanet;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,12 +46,11 @@ public class TestFragment extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentTest.onActivityCreated");
 
-        comm = (Communicator) getActivity(); // fragment communication
-
         btnNewPlanet = getActivity().findViewById(R.id.btnNewPlanet);
         btnNewPlanet.setOnClickListener(this);
-        tvPlanet = getActivity().findViewById(R.id.tvPlanet);
 
+        btnDeletePlanet = getActivity().findViewById(R.id.btnDeletePlanet);
+        btnDeletePlanet.setOnClickListener(this);
     }
 
     @Override
@@ -67,28 +64,18 @@ public class TestFragment extends Fragment implements View.OnClickListener {
                 RandomPlanetSize planetSize = new RandomPlanetSize();
                 RandomPlanetQuality planetQuality = new RandomPlanetQuality();
 
-                Planet planet = new Planet(planetName.getRandomPlanetName(), planetType.getRandomPlanetType(), planetSize.getRandomPlanetSize(), planetQuality.getRandomPlanetQuality());
+                Planet planet = new Planet();
+                planet.setRoomPlanetName(planetName.getRandomPlanetName());
+                planet.setRoomPlanetType(planetType.getRandomPlanetType());
+                planet.setRoomPlanetSize(planetSize.getRandomPlanetSize());
+                planet.setRoomPlanetQuality(planetQuality.getRandomPlanetQuality());
 
-                tvPlanet.setText(
-                        "Planet: "
-                                + planet.getName()
-                                + " - "
-                                + "Type: "
-                                + planet.getType()
-                                + " - "
-                                + "Size: "
-                                + planet.getSize()
-                                + " - "
-                                + "Quality: "
-                                + planet.getQuality()
-                                + " - "
-                                + "Multiplier: "
-                                + "x"+planet.getQualityMultiplier()
-                );
-                String text = tvPlanet.getText().toString();
-                MainActivity.myBundle.putString("id_User", text);
-//                comm.respond(tvPlanet.getText().toString()); // fragment communication
+                MainActivity.planetDatabase.planetDao().insertPlanet(planet);
+
                 break;
+
+            case R.id.btnDeletePlanet:
+                MainActivity.planetDatabase.planetDao().deleteAllPlanets();
         }
     }
 }

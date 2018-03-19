@@ -2,6 +2,7 @@ package com.dexoteric.randomidlegalaxy;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.arch.persistence.room.Room;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dexoteric.randomidlegalaxy.fragments.Communicator;
 import com.dexoteric.randomidlegalaxy.fragments.HelpFragment;
 import com.dexoteric.randomidlegalaxy.fragments.PlanetsFragment;
 import com.dexoteric.randomidlegalaxy.fragments.ResearchFragment;
@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements Communicator {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "lifecycleMessage";
     public static Bundle myBundle = new Bundle();
@@ -35,12 +35,14 @@ public class MainActivity extends AppCompatActivity implements Communicator {
     public HelpFragment fragHelp = new HelpFragment();
     public TestFragment fragTest = new TestFragment();
     private int id;
-
+    public static FragmentManager fm;
+    public static FragmentTransaction ft;
+    public static PlanetDatabase planetDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i(TAG, "onCreate");
         // wczytuje wybrany język
         SharedPreferences languagepref = getSharedPreferences("com.dexoteric.randomidlegalaxy", MODE_PRIVATE);
         languageToLoad = languagepref.getString("languageToLoad", "en");
@@ -52,11 +54,18 @@ public class MainActivity extends AppCompatActivity implements Communicator {
 
         setContentView(R.layout.activity_main);
 
+        planetDatabase = Room.databaseBuilder(getApplicationContext(), PlanetDatabase.class, "planet_database")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
+
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
 
         // dodaje fragmenty na starcie aplikacji
         if (savedInstanceState == null) {
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
+            Log.i(TAG, "savedInstanceState == null");
+
             ft.add(R.id.fragment_frame, fragPlanets, "tagPlanets");
             ft.add(R.id.fragment_frame, fragResearch, "tagResearch");
             ft.add(R.id.fragment_frame, fragSummary, "tagSummary");
@@ -130,8 +139,8 @@ public class MainActivity extends AppCompatActivity implements Communicator {
     //  listener dla przycisków w głównym menu
     private View.OnClickListener btnClickListener = v -> {
         id = v.getId();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
         switch (id) {
             case R.id.btn_planets:
@@ -244,13 +253,6 @@ public class MainActivity extends AppCompatActivity implements Communicator {
         currentTime.setText(displayText);
     }
 
-    // fragment communication
-    @Override
-    public void respond(String data) {
-        ResearchFragment fragResearch = (ResearchFragment) getFragmentManager().findFragmentByTag("tagResearch");
-        fragResearch.changeData(data);
-
-    }
 
 
 }

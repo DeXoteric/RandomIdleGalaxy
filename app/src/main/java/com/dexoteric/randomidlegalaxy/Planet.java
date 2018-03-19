@@ -1,63 +1,72 @@
 package com.dexoteric.randomidlegalaxy;
 
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
+@Entity(tableName = "planets")
 public class Planet {
 
-    private final double POOR_QUALITY_MULTIPLIER = 0.75;
-    private final double NORMAL_QUALITY_MULTIPLIER = 1.00;
-    private final double RICH_QUALITY_MULTIPLIER = 1.25;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "room_planet_id")
+    private int roomPlanetId;
+    @ColumnInfo(name = "room_planet_name")
+    private String roomPlanetName;
+    @ColumnInfo(name = "room_planet_type")
+    private String roomPlanetType;
+    @ColumnInfo(name = "room_planet_size")
+    private String roomPlanetSize;
+    @ColumnInfo(name = "room_planet_quality")
+    private String roomPlanetQuality;
 
-    private String name;
-    private String type;
-    private String size;
-    private String quality;
-
-    private double qualityMultiplier;
-
-
-
-    // empty constructor
     public Planet() {
     }
 
-    // constructor
-    public Planet(String name, String type, String size, String quality) {
-        this.name = name;
-        this.type = type;
-        this.size = size;
-        this.quality = quality;
+    public Planet(String roomPlanetName, String roomPlanetType, String roomPlanetSize, String roomPlanetQuality) {
+        this.roomPlanetName = roomPlanetName;
+        this.roomPlanetType = roomPlanetType;
+        this.roomPlanetSize = roomPlanetSize;
+        this.roomPlanetQuality = roomPlanetQuality;
     }
 
-    public String getName() {
-        return name;
+    public int getRoomPlanetId() {
+        return roomPlanetId;
     }
 
-    public String getType() {
-        return type;
+    public void setRoomPlanetId(int roomPlanetId) {
+        this.roomPlanetId = roomPlanetId;
     }
 
-    public String getSize() {
-        return size;
+    public String getRoomPlanetName() {
+        return roomPlanetName;
     }
 
-    public String getQuality() {
-        return quality;
+    public void setRoomPlanetName(String roomPlanetName) {
+        this.roomPlanetName = roomPlanetName;
     }
 
-    public double getQualityMultiplier() {
-        switch (quality) {
-            case "Poor":
-                qualityMultiplier = POOR_QUALITY_MULTIPLIER;
-                break;
-            case "Normal":
-                qualityMultiplier = NORMAL_QUALITY_MULTIPLIER;
-                break;
-            case "Rich":
-                qualityMultiplier = RICH_QUALITY_MULTIPLIER;
-                break;
-        }
-        return qualityMultiplier;
+    public String getRoomPlanetType() {
+        return roomPlanetType;
+    }
+
+    public void setRoomPlanetType(String roomPlanetType) {
+        this.roomPlanetType = roomPlanetType;
+    }
+
+    public String getRoomPlanetSize() {
+        return roomPlanetSize;
+    }
+
+    public void setRoomPlanetSize(String roomPlanetSize) {
+        this.roomPlanetSize = roomPlanetSize;
+    }
+
+    public String getRoomPlanetQuality() {
+        return roomPlanetQuality;
+    }
+
+    public void setRoomPlanetQuality(String roomPlanetQuality) {
+        this.roomPlanetQuality = roomPlanetQuality;
     }
 }
-
