@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dexoteric.randomidlegalaxy.Planet;
+import com.dexoteric.randomidlegalaxy.database.Planet;
 import com.dexoteric.randomidlegalaxy.R;
 
 import java.util.List;

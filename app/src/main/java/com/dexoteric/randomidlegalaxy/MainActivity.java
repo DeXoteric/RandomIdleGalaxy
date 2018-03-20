@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dexoteric.randomidlegalaxy.database.PlanetDatabase;
 import com.dexoteric.randomidlegalaxy.fragments.HelpFragment;
 import com.dexoteric.randomidlegalaxy.fragments.PlanetsFragment;
 import com.dexoteric.randomidlegalaxy.fragments.ResearchFragment;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
+
         // wczytuje wybrany język
         SharedPreferences languagepref = getSharedPreferences("com.dexoteric.randomidlegalaxy", MODE_PRIVATE);
         languageToLoad = languagepref.getString("languageToLoad", "en");
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        // init baza danych planet
         planetDatabase = Room.databaseBuilder(getApplicationContext(), PlanetDatabase.class, "planet_database")
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
@@ -97,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
         btnHelp.setOnClickListener(btnClickListener);
         btnTest.setOnClickListener(btnClickListener);
 
-
-        currentTime(); // przywołuje metodę na początku aplikacji
+        // przywołuje metodę na początku aplikacji
+        currentTime();
 
         // Begin: wyświetla aktualny czas i odświeża co sekundę
         Thread thread = new Thread() {

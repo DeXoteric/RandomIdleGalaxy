@@ -1,4 +1,4 @@
-package com.dexoteric.randomidlegalaxy;
+package com.dexoteric.randomidlegalaxy.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;

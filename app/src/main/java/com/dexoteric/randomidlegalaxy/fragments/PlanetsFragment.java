@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dexoteric.randomidlegalaxy.MainActivity;
-import com.dexoteric.randomidlegalaxy.Planet;
+import com.dexoteric.randomidlegalaxy.database.Planet;
 import com.dexoteric.randomidlegalaxy.R;
 import com.dexoteric.randomidlegalaxy.adapters.Divider;
 import com.dexoteric.randomidlegalaxy.adapters.PlanetAdapter;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.dexoteric.randomidlegalaxy.MainActivity;
-import com.dexoteric.randomidlegalaxy.Planet;
+import com.dexoteric.randomidlegalaxy.database.Planet;
 import com.dexoteric.randomidlegalaxy.R;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetName;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetQuality;
