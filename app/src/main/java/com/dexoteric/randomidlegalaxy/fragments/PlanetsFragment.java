@@ -19,7 +19,6 @@ import com.dexoteric.randomidlegalaxy.adapters.PlanetAdapter;
 import java.util.List;
 
 
-
 public class PlanetsFragment extends Fragment {
 
     private static final String TAG = "lifecycleMessage";
@@ -44,8 +43,9 @@ public class PlanetsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentPlanets.onActivityCreated");
 
-
-//        MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+        if (MainActivity.planetDatabase.planetDao().count() == 0) {
+            MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+        }
 
         List<Planet> planets = MainActivity.planetDatabase.planetDao().getAllPlanets();
 

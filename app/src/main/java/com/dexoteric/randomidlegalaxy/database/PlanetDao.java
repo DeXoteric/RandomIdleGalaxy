@@ -13,6 +13,8 @@ public interface PlanetDao {
     @Query("SELECT * FROM planets")
     List<Planet> getAllPlanets();
 
+    @Query("SELECT count(*) FROM planets")
+    int count();
 
     @Insert
     void insertPlanet(Planet... planets);
