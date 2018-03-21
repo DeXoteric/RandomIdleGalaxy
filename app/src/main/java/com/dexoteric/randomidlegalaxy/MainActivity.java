@@ -69,18 +69,18 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Log.i(TAG, "savedInstanceState == null");
 
-            ft.add(R.id.fragment_frame, fragPlanets, "tagPlanets");
-            ft.add(R.id.fragment_frame, fragResearch, "tagResearch");
-            ft.add(R.id.fragment_frame, fragSummary, "tagSummary");
-            ft.add(R.id.fragment_frame, fragSettings, "tagSettings");
-            ft.add(R.id.fragment_frame, fragHelp, "tagHelp");
-            ft.add(R.id.fragment_frame, fragTest, "tagTest");
-            ft.show(fragPlanets);
-            ft.hide(fragResearch);
-            ft.hide(fragSummary);
-            ft.hide(fragSettings);
-            ft.hide(fragHelp);
-            ft.hide(fragTest);
+            ft.replace(R.id.fragment_frame, fragPlanets);
+//            ft.add(R.id.fragment_frame, fragResearch, "tagResearch");
+//            ft.add(R.id.fragment_frame, fragSummary, "tagSummary");
+//            ft.add(R.id.fragment_frame, fragSettings, "tagSettings");
+//            ft.add(R.id.fragment_frame, fragHelp, "tagHelp");
+//            ft.add(R.id.fragment_frame, fragTest, "tagTest");
+//            ft.show(fragPlanets);
+//            ft.hide(fragResearch);
+//            ft.hide(fragSummary);
+//            ft.hide(fragSettings);
+//            ft.hide(fragHelp);
+//            ft.hide(fragTest);
             ft.commit();
             findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
         }
@@ -145,65 +145,96 @@ public class MainActivity extends AppCompatActivity {
         fm = getFragmentManager();
         ft = fm.beginTransaction();
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
+
         switch (id) {
             case R.id.btn_planets:
-                if (fragPlanets != null) ft.show(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                if (fragTest != null) ft.hide(fragTest);
+                ft.replace(R.id.fragment_frame, fragPlanets);
                 ft.commit();
                 break;
             case R.id.btn_research:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.show(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                if (fragTest != null) ft.hide(fragTest);
+                ft.replace(R.id.fragment_frame, fragResearch);
                 ft.commit();
                 String text = (String) myBundle.get("id_User");
                 TextView textView = findViewById(R.id.textView2);
                 if (text != null) textView.setText(text);
                 break;
             case R.id.btn_summary:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.show(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                if (fragTest != null) ft.hide(fragTest);
+                ft.replace(R.id.fragment_frame, fragSummary);
                 ft.commit();
                 break;
             case R.id.btn_settings:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.show(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                if (fragTest != null) ft.hide(fragTest);
+                ft.replace(R.id.fragment_frame, fragSettings);
                 ft.commit();
                 break;
             case R.id.btn_help:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.show(fragHelp);
-                if (fragTest != null) ft.hide(fragTest);
+                ft.replace(R.id.fragment_frame, fragHelp);
                 ft.commit();
                 break;
             case R.id.btn_test:
-                if (fragPlanets != null) ft.hide(fragPlanets);
-                if (fragResearch != null) ft.hide(fragResearch);
-                if (fragSummary != null) ft.hide(fragSummary);
-                if (fragSettings != null) ft.hide(fragSettings);
-                if (fragHelp != null) ft.hide(fragHelp);
-                if (fragTest != null) ft.show(fragTest);
+                ft.replace(R.id.fragment_frame, fragTest);
                 ft.commit();
                 break;
         }
+
+//        switch (id) {
+//            case R.id.btn_planets:
+//                if (fragPlanets != null) ft.show(fragPlanets);
+//                if (fragResearch != null) ft.hide(fragResearch);
+//                if (fragSummary != null) ft.hide(fragSummary);
+//                if (fragSettings != null) ft.hide(fragSettings);
+//                if (fragHelp != null) ft.hide(fragHelp);
+//                if (fragTest != null) ft.hide(fragTest);
+//                ft.commit();
+//                break;
+//            case R.id.btn_research:
+//                if (fragPlanets != null) ft.hide(fragPlanets);
+//                if (fragResearch != null) ft.show(fragResearch);
+//                if (fragSummary != null) ft.hide(fragSummary);
+//                if (fragSettings != null) ft.hide(fragSettings);
+//                if (fragHelp != null) ft.hide(fragHelp);
+//                if (fragTest != null) ft.hide(fragTest);
+//                ft.commit();
+//                String text = (String) myBundle.get("id_User");
+//                TextView textView = findViewById(R.id.textView2);
+//                if (text != null) textView.setText(text);
+//                break;
+//            case R.id.btn_summary:
+//                if (fragPlanets != null) ft.hide(fragPlanets);
+//                if (fragResearch != null) ft.hide(fragResearch);
+//                if (fragSummary != null) ft.show(fragSummary);
+//                if (fragSettings != null) ft.hide(fragSettings);
+//                if (fragHelp != null) ft.hide(fragHelp);
+//                if (fragTest != null) ft.hide(fragTest);
+//                ft.commit();
+//                break;
+//            case R.id.btn_settings:
+//                if (fragPlanets != null) ft.hide(fragPlanets);
+//                if (fragResearch != null) ft.hide(fragResearch);
+//                if (fragSummary != null) ft.hide(fragSummary);
+//                if (fragSettings != null) ft.show(fragSettings);
+//                if (fragHelp != null) ft.hide(fragHelp);
+//                if (fragTest != null) ft.hide(fragTest);
+//                ft.commit();
+//                break;
+//            case R.id.btn_help:
+//                if (fragPlanets != null) ft.hide(fragPlanets);
+//                if (fragResearch != null) ft.hide(fragResearch);
+//                if (fragSummary != null) ft.hide(fragSummary);
+//                if (fragSettings != null) ft.hide(fragSettings);
+//                if (fragHelp != null) ft.show(fragHelp);
+//                if (fragTest != null) ft.hide(fragTest);
+//                ft.commit();
+//                break;
+//            case R.id.btn_test:
+//                if (fragPlanets != null) ft.hide(fragPlanets);
+//                if (fragResearch != null) ft.hide(fragResearch);
+//                if (fragSummary != null) ft.hide(fragSummary);
+//                if (fragSettings != null) ft.hide(fragSettings);
+//                if (fragHelp != null) ft.hide(fragHelp);
+//                if (fragTest != null) ft.show(fragTest);
+//                ft.commit();
+//                break;
+//        }
         menuButtonLayoutOnClick(); // przywołanie metody
     };
 

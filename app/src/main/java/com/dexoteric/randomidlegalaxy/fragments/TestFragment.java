@@ -76,6 +76,7 @@ public class TestFragment extends Fragment implements View.OnClickListener {
 
             case R.id.btnDeletePlanet:
                 MainActivity.planetDatabase.planetDao().deleteAllPlanets();
+                MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
         }
     }
 }

@@ -45,8 +45,7 @@ public class PlanetsFragment extends Fragment {
         Log.i(TAG, "fragmentPlanets.onActivityCreated");
 
 
-
-        MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+//        MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
 
         List<Planet> planets = MainActivity.planetDatabase.planetDao().getAllPlanets();
 
