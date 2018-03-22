@@ -1,6 +1,7 @@
 package com.dexoteric.randomidlegalaxy.fragments;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.dexoteric.randomidlegalaxy.MainActivity;
-import com.dexoteric.randomidlegalaxy.database.Planet;
 import com.dexoteric.randomidlegalaxy.R;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetName;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetQuality;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetSize;
 import com.dexoteric.randomidlegalaxy.arrays.RandomPlanetType;
+import com.dexoteric.randomidlegalaxy.database.Planet;
+import com.dexoteric.randomidlegalaxy.database.PlanetDatabase;
 
 
 public class TestFragment extends Fragment implements View.OnClickListener {
@@ -23,7 +24,8 @@ public class TestFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "lifecycleMessage";
 
-    private Button btnNewPlanet,btnDeletePlanet;
+    private Button btnNewPlanet, btnDeletePlanet;
+    private PlanetDatabase planetDatabase;
 
 
     @Override
@@ -46,6 +48,10 @@ public class TestFragment extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentTest.onActivityCreated");
 
+
+        planetDatabase = PlanetDatabase.getDatabase(getActivity());
+
+
         btnNewPlanet = getActivity().findViewById(R.id.btnNewPlanet);
         btnNewPlanet.setOnClickListener(this);
 
@@ -55,28 +61,46 @@ public class TestFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
 
-        switch (id) {
-            case R.id.btnNewPlanet:
-                RandomPlanetName planetName = new RandomPlanetName();
-                RandomPlanetType planetType = new RandomPlanetType();
-                RandomPlanetSize planetSize = new RandomPlanetSize();
-                RandomPlanetQuality planetQuality = new RandomPlanetQuality();
+        new MyTask().execute(v);
 
-                Planet planet = new Planet();
-                planet.setRoomPlanetName(planetName.getRandomPlanetName());
-                planet.setRoomPlanetType(planetType.getRandomPlanetType());
-                planet.setRoomPlanetSize(planetSize.getRandomPlanetSize());
-                planet.setRoomPlanetQuality(planetQuality.getRandomPlanetQuality());
+    }
 
-                MainActivity.planetDatabase.planetDao().insertPlanet(planet);
+    private class MyTask extends AsyncTask<View, Void, Void> {
 
-                break;
 
-            case R.id.btnDeletePlanet:
-                MainActivity.planetDatabase.planetDao().deleteAllPlanets();
-                MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+        @Override
+        protected Void doInBackground(View... views) {
+            View v = views[0];
+
+            int id = v.getId();
+
+            switch (id) {
+                case R.id.btnNewPlanet:
+
+                    RandomPlanetName planetName = new RandomPlanetName();
+                    RandomPlanetType planetType = new RandomPlanetType();
+                    RandomPlanetSize planetSize = new RandomPlanetSize();
+                    RandomPlanetQuality planetQuality = new RandomPlanetQuality();
+
+                    Planet planet = new Planet();
+                    planet.setRoomPlanetName(planetName.getRandomPlanetName());
+                    planet.setRoomPlanetType(planetType.getRandomPlanetType());
+                    planet.setRoomPlanetSize(planetSize.getRandomPlanetSize());
+                    planet.setRoomPlanetQuality(planetQuality.getRandomPlanetQuality());
+
+                    planetDatabase.planetDao().addPlanet(planet);
+                    break;
+
+
+                case R.id.btnDeletePlanet:
+
+                    planetDatabase.planetDao().deleteAllPlanets();
+//                MainActivity.planetDatabase.planetDao().addPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+                    break;
+            }
+            return null;
         }
     }
+
 }

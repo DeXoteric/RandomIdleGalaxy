@@ -7,13 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.dexoteric.randomidlegalaxy.R;
+
+import static com.dexoteric.randomidlegalaxy.MainActivity.planets;
 
 
 public class ResearchFragment extends Fragment {
 
-//    public TextView textView2;
+    public TextView testText;
     private static final String TAG = "lifecycleMessage";
 
 
@@ -37,7 +40,14 @@ public class ResearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentResearch.onActivityCreated");
 
-//        textView2 = getActivity().findViewById(R.id.textView2);
+
+
+        testText = getActivity().findViewById(R.id.textView2);
+        testText.setText(planets.get(0).getRoomPlanetName() + "\n");
+        testText.append(planets.get(1).getRoomPlanetName() + "\n");
+        testText.append(planets.get(2).getRoomPlanetName() + "\n");
+        testText.append(planets.get(3).getRoomPlanetName() + "\n");
+
 
     }
 

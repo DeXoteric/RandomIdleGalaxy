@@ -17,7 +17,7 @@ public interface PlanetDao {
     int count();
 
     @Insert
-    void insertPlanet(Planet... planets);
+    void addPlanet(Planet... planets);
 
 
     @Query("DELETE FROM planets")

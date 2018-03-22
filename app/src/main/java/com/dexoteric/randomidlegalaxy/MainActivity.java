@@ -2,9 +2,9 @@ package com.dexoteric.randomidlegalaxy;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.arch.persistence.room.Room;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.dexoteric.randomidlegalaxy.database.Planet;
 import com.dexoteric.randomidlegalaxy.database.PlanetDatabase;
 import com.dexoteric.randomidlegalaxy.fragments.HelpFragment;
 import com.dexoteric.randomidlegalaxy.fragments.PlanetsFragment;
@@ -21,6 +22,7 @@ import com.dexoteric.randomidlegalaxy.fragments.SummaryFragment;
 import com.dexoteric.randomidlegalaxy.fragments.TestFragment;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "lifecycleMessage";
     public static Bundle myBundle = new Bundle();
     public static String languageToLoad;
+    public static FragmentManager fm;
+    public static FragmentTransaction ft;
+    public static List<Planet> planets;
     public PlanetsFragment fragPlanets = new PlanetsFragment();
     public ResearchFragment fragResearch = new ResearchFragment();
     public SummaryFragment fragSummary = new SummaryFragment();
@@ -36,109 +41,6 @@ public class MainActivity extends AppCompatActivity {
     public HelpFragment fragHelp = new HelpFragment();
     public TestFragment fragTest = new TestFragment();
     private int id;
-    public static FragmentManager fm;
-    public static FragmentTransaction ft;
-    public static PlanetDatabase planetDatabase;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate");
-
-        // wczytuje wybrany język
-        SharedPreferences languagepref = getSharedPreferences("com.dexoteric.randomidlegalaxy", MODE_PRIVATE);
-        languageToLoad = languagepref.getString("languageToLoad", "en");
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
-        setContentView(R.layout.activity_main);
-
-        // init baza danych planet
-        planetDatabase = Room.databaseBuilder(getApplicationContext(), PlanetDatabase.class, "planet_database")
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build();
-
-        fm = getFragmentManager();
-        ft = fm.beginTransaction();
-
-        // dodaje fragmenty na starcie aplikacji
-        if (savedInstanceState == null) {
-            Log.i(TAG, "savedInstanceState == null");
-
-            ft.replace(R.id.fragment_frame, fragPlanets);
-//            ft.add(R.id.fragment_frame, fragResearch, "tagResearch");
-//            ft.add(R.id.fragment_frame, fragSummary, "tagSummary");
-//            ft.add(R.id.fragment_frame, fragSettings, "tagSettings");
-//            ft.add(R.id.fragment_frame, fragHelp, "tagHelp");
-//            ft.add(R.id.fragment_frame, fragTest, "tagTest");
-//            ft.show(fragPlanets);
-//            ft.hide(fragResearch);
-//            ft.hide(fragSummary);
-//            ft.hide(fragSettings);
-//            ft.hide(fragHelp);
-//            ft.hide(fragTest);
-            ft.commit();
-            findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
-        }
-
-
-        Button btnPlanets = findViewById(R.id.btn_planets);
-        Button btnResearch = findViewById(R.id.btn_research);
-        Button btnSummary = findViewById(R.id.btn_summary);
-        Button btnHelp = findViewById(R.id.btn_help);
-        Button btnSettings = findViewById(R.id.btn_settings);
-        Button btnTest = findViewById(R.id.btn_test);
-
-        btnPlanets.setOnClickListener(btnClickListener);
-        btnResearch.setOnClickListener(btnClickListener);
-        btnSummary.setOnClickListener(btnClickListener);
-        btnSettings.setOnClickListener(btnClickListener);
-        btnHelp.setOnClickListener(btnClickListener);
-        btnTest.setOnClickListener(btnClickListener);
-
-        // przywołuje metodę na początku aplikacji
-        currentTime();
-
-        // Begin: wyświetla aktualny czas i odświeża co sekundę
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(() -> {
-                            currentTime(); // przywołuje metodę co sekundę
-                        });
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        thread.start();
-        // End: wyświetla aktualny czas i odświeża co sekundę
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        Log.i(TAG, "onWindowFocusChanged");
-        super.onWindowFocusChanged(hasFocus);
-
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }
-
     //  listener dla przycisków w głównym menu
     private View.OnClickListener btnClickListener = v -> {
         id = v.getId();
@@ -238,8 +140,110 @@ public class MainActivity extends AppCompatActivity {
         menuButtonLayoutOnClick(); // przywołanie metody
     };
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate");
+
+        // wczytuje wybrany język
+        SharedPreferences languagepref = getSharedPreferences("com.dexoteric.randomidlegalaxy", MODE_PRIVATE);
+        languageToLoad = languagepref.getString("languageToLoad", "en");
+        Locale locale = new Locale(languageToLoad);
+        Locale.setDefault(locale);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+        setContentView(R.layout.activity_main);
+
+        // init baza danych planet
+
+        new MyTask().execute();
+
+
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
+
+        // dodaje fragment na starcie aplikacji
+        if (savedInstanceState == null) {
+            Log.i(TAG, "savedInstanceState == null");
+
+            ft.replace(R.id.fragment_frame, fragPlanets);
+            ft.commit();
+            findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
+        }
+
+        // ustawia UI
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        // init buttony i ich clicklistenery
+        Button btnPlanets = findViewById(R.id.btn_planets);
+        Button btnResearch = findViewById(R.id.btn_research);
+        Button btnSummary = findViewById(R.id.btn_summary);
+        Button btnHelp = findViewById(R.id.btn_help);
+        Button btnSettings = findViewById(R.id.btn_settings);
+        Button btnTest = findViewById(R.id.btn_test);
+
+        btnPlanets.setOnClickListener(btnClickListener);
+        btnResearch.setOnClickListener(btnClickListener);
+        btnSummary.setOnClickListener(btnClickListener);
+        btnSettings.setOnClickListener(btnClickListener);
+        btnHelp.setOnClickListener(btnClickListener);
+        btnTest.setOnClickListener(btnClickListener);
+
+        // przywołuje metodę na początku aplikacji
+        currentTime();
+
+        // wyświetla aktualny czas i odświeża co sekundę
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(() -> {
+                            currentTime(); // przywołuje metodę co sekundę
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        Log.i(TAG, "onWindowFocusChanged");
+        super.onWindowFocusChanged(hasFocus);
+
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        PlanetDatabase.destroyDatabaseInstance();
+        super.onDestroy();
+    }
+
     // metoda zmieniająca layout przycisku w zależności który fragment jest aktywny
-    private void  menuButtonLayoutOnClick(){
+    private void menuButtonLayoutOnClick() {
         if (id == R.id.btn_planets) {
             findViewById(R.id.btn_planets).setBackground(getResources().getDrawable(R.drawable.button_selected));
         } else {
@@ -287,6 +291,15 @@ public class MainActivity extends AppCompatActivity {
         currentTime.setText(displayText);
     }
 
+    private class MyTask extends AsyncTask<Void,Void,Void> {
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+            PlanetDatabase planetDatabase = PlanetDatabase.getDatabase(getApplicationContext());
+            planets = planetDatabase.planetDao().getAllPlanets();
+            return null;
+        }
+
+    }
 
 }

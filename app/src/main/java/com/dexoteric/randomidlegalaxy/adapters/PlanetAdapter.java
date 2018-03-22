@@ -9,19 +9,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dexoteric.randomidlegalaxy.database.Planet;
 import com.dexoteric.randomidlegalaxy.R;
+import com.dexoteric.randomidlegalaxy.database.Planet;
 
 import java.util.List;
 
 public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHolder> {
 
     private List<Planet> planets;
+    private ClickCallback clickCallback;
 
-    public PlanetAdapter(List<Planet> planets) {
-        this.planets = planets;
+
+    // interface do pobierania pozycji z recyclera
+    public interface ClickCallback {
+        void onItemClick (int position);
     }
 
+    public PlanetAdapter(List<Planet> planets, ClickCallback clickCallback) {
+        this.planets = planets;
+        this.clickCallback = clickCallback;
+    }
 
 
     @NonNull
@@ -29,11 +36,11 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
     public PlanetAdapter.PlanetHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.planet, parent, false);
-        return new PlanetHolder(view);
+        return new PlanetHolder(view, clickCallback);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlanetAdapter.PlanetHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PlanetAdapter.PlanetHolder holder, int position)  {
 
         holder.planetName.setText(planets.get(position).getRoomPlanetName());
 
@@ -81,8 +88,9 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
         return planets.size();
     }
 
-    class PlanetHolder extends RecyclerView.ViewHolder {
+    class PlanetHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        ClickCallback clickCallback;
         TextView planetName;
         TextView planetSpecial;
         ImageView planetType;
@@ -90,8 +98,10 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
         ImageView planetQuality;
 
 
-        PlanetHolder(View itemView) {
+        PlanetHolder(View itemView, ClickCallback clickCallback) {
             super(itemView);
+            this.clickCallback = clickCallback;
+            itemView.setOnClickListener(this);
             planetName = itemView.findViewById(R.id.tv_planet_name);
             planetSpecial = itemView.findViewById(R.id.tv_special);
             planetType = itemView.findViewById(R.id.iv_planet_type);
@@ -99,6 +109,13 @@ public class PlanetAdapter extends RecyclerView.Adapter<PlanetAdapter.PlanetHold
             planetQuality = itemView.findViewById(R.id.iv_planet_quality);
 
 
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            clickCallback.onItemClick(getAdapterPosition());
         }
 
     }

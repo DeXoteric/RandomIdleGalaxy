@@ -1,6 +1,7 @@
 package com.dexoteric.randomidlegalaxy.fragments;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,21 +10,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.dexoteric.randomidlegalaxy.MainActivity;
-import com.dexoteric.randomidlegalaxy.database.Planet;
 import com.dexoteric.randomidlegalaxy.R;
 import com.dexoteric.randomidlegalaxy.adapters.Divider;
 import com.dexoteric.randomidlegalaxy.adapters.PlanetAdapter;
+import com.dexoteric.randomidlegalaxy.database.Planet;
+import com.dexoteric.randomidlegalaxy.database.PlanetDatabase;
 
-import java.util.List;
+import static com.dexoteric.randomidlegalaxy.MainActivity.planets;
 
 
 public class PlanetsFragment extends Fragment {
 
     private static final String TAG = "lifecycleMessage";
+
     RecyclerView recyclerPlanets;
     RecyclerView.Adapter adapterPlanets;
+
+    // wyświetla dane z bazy danych według pozycji z recyclera planet
+    private PlanetAdapter.ClickCallback clickCallback = new PlanetAdapter.ClickCallback() {
+        @Override
+        public void onItemClick(int position) {
+            TextView planetInfo = getActivity().findViewById(R.id.tv_planet_info);
+            planetInfo.setText(planets.get(position).getRoomPlanetName() + "\n");
+            planetInfo.append(planets.get(position).getRoomPlanetType() + "\n");
+            planetInfo.append(planets.get(position).getRoomPlanetSize() + "\n");
+            planetInfo.append(planets.get(position).getRoomPlanetQuality() + "\n");
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,18 +58,53 @@ public class PlanetsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "fragmentPlanets.onActivityCreated");
 
-        if (MainActivity.planetDatabase.planetDao().count() == 0) {
-            MainActivity.planetDatabase.planetDao().insertPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+        new MyTask().execute();
+
+
+        // init recyclera planet
+//        recyclerPlanets = getActivity().findViewById(R.id.rv_planets);
+//        recyclerPlanets.addItemDecoration(new Divider(getActivity(), LinearLayoutManager.HORIZONTAL));
+//        adapterPlanets = new PlanetAdapter(planets, clickCallback);
+//        recyclerPlanets.setAdapter(adapterPlanets);
+//        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+//        recyclerPlanets.setLayoutManager(manager);
+
+
+    }
+
+    private class MyTask extends AsyncTask <Void,Void,Void>{
+
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            // init bazy danych planet
+            PlanetDatabase planetDatabase = PlanetDatabase.getDatabase(getActivity());
+
+
+            // dodaje stolicę do bazy danych jeśli ta jest pusta (po resecie gry)
+            if (planetDatabase.planetDao().count() == 0) {
+                planetDatabase.planetDao().addPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+            }
+
+            // wczytuje całą bazę danych planet
+            planets = planetDatabase.planetDao().getAllPlanets();
+            return null;
         }
 
-        List<Planet> planets = MainActivity.planetDatabase.planetDao().getAllPlanets();
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            // init recyclera planet
+            recyclerPlanets = getActivity().findViewById(R.id.rv_planets);
+            recyclerPlanets.addItemDecoration(new Divider(getActivity(), LinearLayoutManager.HORIZONTAL));
+            adapterPlanets = new PlanetAdapter(planets, clickCallback);
+            recyclerPlanets.setAdapter(adapterPlanets);
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            recyclerPlanets.setLayoutManager(manager);
+            adapterPlanets.notifyDataSetChanged();
 
-        recyclerPlanets = getActivity().findViewById(R.id.rv_planets);
-        recyclerPlanets.addItemDecoration(new Divider(getActivity(), LinearLayoutManager.HORIZONTAL));
-        adapterPlanets = new PlanetAdapter(planets);
-        recyclerPlanets.setAdapter(adapterPlanets);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerPlanets.setLayoutManager(manager);
+        }
     }
 
 }
