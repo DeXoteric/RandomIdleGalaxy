@@ -88,6 +88,9 @@ public class TestFragment extends Fragment implements View.OnClickListener {
                     planet.setRoomPlanetType(planetType.getRandomPlanetType());
                     planet.setRoomPlanetSize(planetSize.getRandomPlanetSize());
                     planet.setRoomPlanetQuality(planetQuality.getRandomPlanetQuality());
+                    planet.setRoomAcriteInitial(0);
+                    planet.setRoomAcritePerSecond(0.0f);
+                    planet.setRoomAcriteStock(0);
 
                     planetDatabase.planetDao().addPlanet(planet);
                     break;

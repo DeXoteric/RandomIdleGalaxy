@@ -5,7 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {Planet.class}, version = 2)
+@Database(entities = {Planet.class}, version = 3)
 public abstract class PlanetDatabase extends RoomDatabase {
 
 
@@ -29,7 +29,7 @@ public abstract class PlanetDatabase extends RoomDatabase {
     private void addCapitalPlanet() {
         // dodaje stolicę do bazy danych jeśli ta jest pusta (po resecie gry)
         if (planetDao().count() == 0) {
-            planetDao().addPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+            planetDao().addPlanet(new Planet("Capital", "Capital", "Capital", "Capital",10,1.0f,0));
         }
     }
 

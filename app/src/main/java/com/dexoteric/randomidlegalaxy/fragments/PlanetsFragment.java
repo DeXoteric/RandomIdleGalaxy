@@ -32,11 +32,26 @@ public class PlanetsFragment extends Fragment {
     private PlanetAdapter.ClickCallback clickCallback = new PlanetAdapter.ClickCallback() {
         @Override
         public void onItemClick(int position) {
+
             TextView planetInfo = getActivity().findViewById(R.id.tv_planet_info);
-            planetInfo.setText(planets.get(position).getRoomPlanetName() + "\n");
-            planetInfo.append(planets.get(position).getRoomPlanetType() + "\n");
-            planetInfo.append(planets.get(position).getRoomPlanetSize() + "\n");
-            planetInfo.append(planets.get(position).getRoomPlanetQuality() + "\n");
+            if (position == 0) {
+                planetInfo.setText("Capital" + "\n");
+                planetInfo.append("Unique" + "\n");
+                planetInfo.append("Unique" + "\n");
+                planetInfo.append("Unique");
+            } else {
+                planetInfo.setText(planets.get(position).getRoomPlanetName() + "\n");
+                planetInfo.append(planets.get(position).getRoomPlanetType() + "\n");
+                planetInfo.append(planets.get(position).getRoomPlanetSize() + "\n");
+                planetInfo.append(planets.get(position).getRoomPlanetQuality());
+            }
+
+            TextView acriteInfo = getActivity().findViewById(R.id.tv_acrite);
+            acriteInfo.setText("Acrite: " + "Stock - "+ planets.get(position).getRoomAcriteStock()
+            + " Total - " + planets.get(position).getRoomAcriteInitial()
+            + " Per Second - " + planets.get(position).getRoomAcritePerSecond());
+
+
         }
     };
 
@@ -72,8 +87,7 @@ public class PlanetsFragment extends Fragment {
 
     }
 
-    private class MyTask extends AsyncTask <Void,Void,Void>{
-
+    private class MyTask extends AsyncTask<Void, Void, Void> {
 
 
         @Override
@@ -85,7 +99,7 @@ public class PlanetsFragment extends Fragment {
 
             // dodaje stolicę do bazy danych jeśli ta jest pusta (po resecie gry)
             if (planetDatabase.planetDao().count() == 0) {
-                planetDatabase.planetDao().addPlanet(new Planet("Capital", "Capital", "Capital", "Capital"));
+                planetDatabase.planetDao().addPlanet(new Planet("Capital", "Capital", "Capital", "Capital",10,1.0f,0));
             }
 
             // wczytuje całą bazę danych planet

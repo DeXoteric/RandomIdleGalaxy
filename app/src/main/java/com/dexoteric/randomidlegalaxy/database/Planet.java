@@ -20,14 +20,24 @@ public class Planet {
     @ColumnInfo(name = "room_planet_quality")
     private String roomPlanetQuality;
 
+    @ColumnInfo(name = "room_acrite_initial")
+    private int roomAcriteInitial;
+    @ColumnInfo(name = "room_acrite_per_second")
+    private double roomAcritePerSecond;
+    @ColumnInfo(name = "room_acrite_stock")
+    private double roomAcriteStock;
+
     public Planet() {
     }
 
-    public Planet(String roomPlanetName, String roomPlanetType, String roomPlanetSize, String roomPlanetQuality) {
+    public Planet(String roomPlanetName, String roomPlanetType, String roomPlanetSize, String roomPlanetQuality, int roomAcriteInitial, double roomAcritePerSecond, int roomAcriteStock) {
         this.roomPlanetName = roomPlanetName;
         this.roomPlanetType = roomPlanetType;
         this.roomPlanetSize = roomPlanetSize;
         this.roomPlanetQuality = roomPlanetQuality;
+        this.roomAcriteInitial = roomAcriteInitial;
+        this.roomAcritePerSecond = roomAcritePerSecond;
+        this.roomAcriteStock = roomAcriteStock;
     }
 
     public int getRoomPlanetId() {
@@ -69,4 +79,30 @@ public class Planet {
     public void setRoomPlanetQuality(String roomPlanetQuality) {
         this.roomPlanetQuality = roomPlanetQuality;
     }
+
+    public int getRoomAcriteInitial() {
+        return roomAcriteInitial;
+    }
+
+    public void setRoomAcriteInitial(int roomAcriteInitial) {
+        this.roomAcriteInitial = roomAcriteInitial;
+    }
+
+    public double getRoomAcritePerSecond() {
+        return roomAcritePerSecond;
+    }
+
+    public double getRoomAcriteStock() {
+        return roomAcriteStock;
+    }
+
+    public void setRoomAcriteStock(double roomAcriteStock) {
+        this.roomAcriteStock = roomAcriteStock;
+    }
+
+    public void setRoomAcritePerSecond(double roomAcritePerSecond) {
+        this.roomAcritePerSecond = roomAcritePerSecond;
+    }
+
+
 }

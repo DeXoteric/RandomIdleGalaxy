@@ -21,7 +21,6 @@ import com.dexoteric.randomidlegalaxy.fragments.SettingsFragment;
 import com.dexoteric.randomidlegalaxy.fragments.SummaryFragment;
 import com.dexoteric.randomidlegalaxy.fragments.TestFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -174,13 +173,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // ustawia UI
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        systemUI();
+
 
         // init buttony i ich clicklistenery
         Button btnPlanets = findViewById(R.id.btn_planets);
@@ -197,26 +191,7 @@ public class MainActivity extends AppCompatActivity {
         btnHelp.setOnClickListener(btnClickListener);
         btnTest.setOnClickListener(btnClickListener);
 
-        // przywołuje metodę na początku aplikacji
-        currentTime();
 
-        // wyświetla aktualny czas i odświeża co sekundę
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(() -> {
-                            currentTime(); // przywołuje metodę co sekundę
-                        });
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        thread.start();
 
     }
 
@@ -226,13 +201,7 @@ public class MainActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
 
         if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            systemUI();
         }
     }
 
@@ -240,6 +209,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         PlanetDatabase.destroyDatabaseInstance();
         super.onDestroy();
+    }
+
+    // system UI
+    private void systemUI(){
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     // metoda zmieniająca layout przycisku w zależności który fragment jest aktywny
@@ -281,15 +261,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // metoda wyświetlająca aktualny czas
-    private void currentTime() {
-        TextView currentTime = findViewById(R.id.tv_current_time);
-        long time = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        String timeString = sdf.format(time);
-        String displayText = getString(R.string.current_time) + timeString;
-        currentTime.setText(displayText);
-    }
 
     private class MyTask extends AsyncTask<Void,Void,Void> {
 
